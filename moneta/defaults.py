@@ -2,13 +2,12 @@
 from djangofloor.utils import DirectoryPath
 
 __author__ = 'flanker'
-from django.utils.translation import ugettext_lazy as _
 
 FLOOR_URL_CONF = 'moneta.root_urls.urls'
 EXTRA_INSTALLED_APP = 'bootstrap3'
 FLOOR_INSTALLED_APPS = ['moneta', 'moneta.repositories', 'moneta.repository', '{EXTRA_INSTALLED_APP}']
 FLOOR_INDEX = 'moneta.views.index'
-FLOOR_PROJECT_NAME = _('Moneta')
+FLOOR_PROJECT_NAME = 'Moneta'
 
 UPLOAD_ROOT = 'uploads'
 ARCHIVE_FILTERS = [
@@ -21,7 +20,8 @@ REPOSITORY_CLASSES = [
     'moneta.repositories.maven3.Maven3',
     'moneta.repositories.flat_files.FlatFile',
     'moneta.repositories.yum.Yum',
-    # 'moneta.repositories.ruby.RubyGem',
+    'moneta.repositories.ruby.RubyGem',
+    'moneta.repositories.jetbrains.Jetbrains',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = [
@@ -35,8 +35,30 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'django.contrib.messages.context_processors.messages',
     'djangofloor.context_processors.context_base',
     'moneta.context_processors.context_base',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
+]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Already defined Django-related contexts here
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.request',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'djangofloor.context_processors.context_base',
+                'moneta.context_processors.context_base',
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
+            ],
+        },
+    },
 ]
 
 STORAGES = {
@@ -63,7 +85,7 @@ STORAGE_CACHE = 'cache'
 CACHES = {'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}}
 
 FLOOR_FAKE_AUTHENTICATION_USERNAME = None
-DEBUG = False
+DEBUG = True
 # TO BE CONFIGURED
 GNUPG_HOME = DirectoryPath('{LOCAL_PATH}/gpg')
 # TO BE CONFIGURED
